@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+}
+
+#stats-header {
+  background-color: red;
+  color: white;
+}
+
+#stats-header td {
+  padding-left: 25%;
+}
+table, tr{
+  border: 1px solid black;
+}
