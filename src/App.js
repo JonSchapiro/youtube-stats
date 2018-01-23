@@ -32,10 +32,7 @@ class App extends Component {
     this.paginateNext = this.paginateNext.bind(this);
     this.updateChannelId= this.updateChannelId.bind(this);
     this.getCachedChannelInfo = this.getCachedChannelInfo.bind(this);
-  }
-  
-  componentDidMount() {
-    //setInterval(this.loadVideoStats, 10000);
+    this.logout = this.logout.bind(this);
   }
 
   componentWillMount() {
@@ -43,17 +40,44 @@ class App extends Component {
   }
 
   getCachedChannelInfo() {
-    if (chrome) {
-      chrome.storage.sync.get('channelInfo', function(items) {
-        message('Settings retrieved', items);
-        this.setState({items});
-      });
+    if (window && window.localStorage) {
+      const channelInfoString = window.localStorage.getItem('channelInfo');
+      let channelInfo = null;
+      try {
+        channelInfo = JSON.parse(channelInfoString);
+      } catch(e) {
+        console.log('Error while reading channelInfo from local storage ', e);
+      }
+
+      if (channelInfo) {
+        this.setState({channelId: channelInfo.channelId, playlistId: channelInfo.playlistId}, () => {
+          this.loadVideoStats()
+            .then(() => {
+              this.setState({channelFound: true});
+            });
+        });
+      }
     }
   }
 
+  logout() {
+    if (window && window.localStorage) {
+      window.localStorage.clear();
+      this.setState({
+        channelId: '',
+        channelFound: false,
+        videoStats: {},
+        pageNumber: 0,
+        numberOfPages: 0,
+        nextPageToken: '',
+        prevPageToken: '',
+        playlistId: ''
+      });
+    }
+  }
   paginateNext() {
     const newPage = this.state.pageNumber + 1;
-    console.log('next new page ', newPage)
+
     if (newPage <= this.state.numberOfPages) {
       this.setState({ pageNumber: newPage });
       this.loadVideoStats(newPage);
@@ -62,7 +86,7 @@ class App extends Component {
 
   paginatePrev() {
     const newPage = this.state.pageNumber - 1;
-    console.log('prev new page ', newPage)
+
     if (newPage >= 0 && this.state.prevPageToken) {
       this.setState({ pageNumber: newPage });
       this.loadVideoStats(newPage);
@@ -70,7 +94,7 @@ class App extends Component {
   }
 
   loadVideoStats(pageNumber) {
-    retrieveVideoIds({
+    return retrieveVideoIds({
       useCache: false,
       pageNumber,
       nextPageToken: this.state.nextPageToken,
@@ -85,26 +109,32 @@ class App extends Component {
           prevPageToken: videoData.prevPageToken || ''
         });
       });
-    return {};
   }
   
   loadPlaylistId() {
     if (!this.state.channelId) {
       return;
     }
-     console.log('loading playlist id for channel ', this.state.channelId)
+
     return retrievePlaylistId(this.state.channelId)
       .then(playlistId => {
         if (playlistId) {
-          console.log('found playlist ', playlistId);
-          this.setState({channelFound: true, playlistId});
-          if (chrome) {
-            chrome.storage.sync.set({'channelInfo': {
+          this.setState({playlistId}, () => {
+            this.loadVideoStats()
+              .then(() => {
+                this.setState({channelFound: true, playlistId});
+              });
+          })
+          if (window && window.localStorage) {
+            const channelInfo = JSON.stringify({
               channelId: this.state.channelId,
               playlistId
-            }}, function() {
-              message('Settings saved');
             });
+            try {
+              window.localStorage.setItem('channelInfo', channelInfo);
+            } catch(e) {
+              console.log('Error while storing channelInfo in local storage', e);
+            }
           }
         }
       })
@@ -128,6 +158,9 @@ class App extends Component {
               <td>COMMENTS</td>
               <td>
                 <button onClick={this.loadVideoStats}>refresh</button>
+              </td>
+              <td>
+                <button onClick={this.logout}>logout</button>
               </td>
             </tr>
             <Stats videoStats={this.state.videoStats} />

@@ -19,11 +19,11 @@ let cachedVideoStats;
 
 function retrievePlaylistId(channelId) {
   if (!channelId) {
-    return;
+    return Promise.resolve('');
   }
 
   const url = CHANNEL_INFO.replace('{0}', channelId);
-  console.log('FINDING PLAYLIST ID', url);
+
   return fetch(url)
     .then((resp) => resp.json())
     .then(data => {
@@ -37,7 +37,8 @@ function retrievePlaylistId(channelId) {
 
 function retrieveVideoIds({playlistId, useCache, nextPageToken, prevPageToken}) {
   if (!playlistId) {
-    return EMPTY_RESP;
+    console.log('Error: no playlistId provided ', playlistId);
+    return Promise.resolve(EMPTY_RESP);
   }
 
   if (nextPageToken) {
