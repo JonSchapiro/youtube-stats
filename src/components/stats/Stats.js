@@ -16,7 +16,7 @@ export default class Stats extends Component {
   render() {
     return (_.map(this.state.videoStats, (video => {
       return <tr>
-              <td><a href={video.url} target="_blank"><img src={video.thumbnails.default.url} alt={video.title} height="52" width="52"/></a></td>
+              <td><a className="thumbnail-link" href={video.url} target="_blank"><img className="thumbnail" src={video.thumbnails.high.url} alt={video.title}/></a></td>
               <td>{video.statistics.viewCount}</td>
               <td>{video.statistics.likeCount}</td>
               <td>{video.statistics.commentCount}</td>
