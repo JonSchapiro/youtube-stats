@@ -146,41 +146,39 @@ class App extends Component {
   render() {
     return this.state.channelFound ? (
       <div className="App">
+        <div className="table-heading">
+          <span className="page-title">YOUTUBE STATISTICS</span>
+          <span className="page-nav">
+            <button onClick={this.loadVideoStats}>refresh</button>
+            <button onClick={this.logout}>logout</button>
+          </span>
+        </div>
         <table>
+          <thead>
+            <tr colSpan="9" id="stats-header">
+            <th>VIDEO</th>
+            <th>VIEWS</th>
+            <th>LIKES</th>
+            <th>COMMENTS</th>
+          </tr>
+          </thead>
           <tbody>
-            <th colSpan="9" id="stats-header">
-              <td> YOUTUBE STATISTICS  </td>
-            </th>
-            <tr>
-              <td>VIDEO</td>
-              <td>VIEWS</td>
-              <td>LIKES</td>
-              <td>COMMENTS</td>
-              <td>
-                <button onClick={this.loadVideoStats}>refresh</button>
-              </td>
-              <td>
-                <button onClick={this.logout}>logout</button>
-              </td>
-            </tr>
             <Stats videoStats={this.state.videoStats} />
-            <tr>
-              <td align="left" colSpan="4">
-                <button onClick={this.paginatePrev}>Prev</button>
-              </td>
-              <td align="right" colSpan="4">
-                <button onClick={this.paginateNext}>Next</button>
-              </td>
-            </tr>
           </tbody>
         </table>
+        <div className="pagination">
+          <button onClick={this.paginatePrev}>Prev</button>
+          <button onClick={this.paginateNext}>Next</button>
+        </div>
       </div>
     ) : (
         <div className="App">
-          Please, Enter Your Channel Id:
-          <br/>
-          <input value={this.state.channelId} onChange={evt => this.updateChannelId(evt)}/>
-          <button onClick={this.loadPlaylistId}> Find Channel </button>
+          <div className="heading">
+            <img className="logo" src="./yt_logo_rgb_dark.png" />
+            <h1> Stats </h1>
+          </div>
+          <input className="text-field" placeholder="Please, enter your channel ID" value={this.state.channelId} onChange={evt => this.updateChannelId(evt)}/>
+          <button className="submit-button" onClick={this.loadPlaylistId}> Find Channel </button>
         </div>
       );
   }
