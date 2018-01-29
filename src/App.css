@@ -6,33 +6,36 @@ body {
   color: white;
   font-family: 'Oswald', sans-serif;
   letter-spacing: 0.5px;
+  padding: 15px;
   text-align: center;
 }
 
 .heading {
-  margin-top: 100px;
+  margin: 0 0 10px;
 }
 
 .logo {
   display: inline-block;
   vertical-align: sub;
-  width: 300px;
+  width: 145px;
 }
 
 h1 {
   display: inline-block;
-  font-size: 67px;
-  margin: 0 20px;
+  font-size: 32px;
+  margin: 0;
+  text-indent: 10px;
 }
 
 .text-field {
   border-radius: 5px;
   color: #282828;
-  font-size: 15px;
+  font-size: 10px;
   letter-spacing: 1px;
   height: 25px;
+  margin-bottom: 5px;
   padding: 0 10px;
-  width: 250px;
+  width: 200px;
 }
 
 .submit-button {
@@ -57,8 +60,7 @@ h1 {
 }
 
 .page-title {
-  font-size: 25px;
-  text-indent: 25px;
+  font-size: 20px;
 }
 
 .page-nav button,
@@ -67,7 +69,7 @@ h1 {
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 13px;
   font-family: 'Oswald', sans-serif;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -86,16 +88,17 @@ table {
 .thumbnail-link {
   display: block;
   overflow: hidden;
-  height: 90px;
+  height: 41px;
+  width: 75px;
 }
 
 .thumbnail {
-  margin: -15px 0;
-  width: 160px;
+  margin: -8px 0;
+  width: 100%;
 }
 
 .thumbnail:hover {
-  opacity: .9;
+  opacity: .8;
 }
 
 thead {
@@ -105,6 +108,7 @@ thead {
 tr {
   align-items: center;
   display: flex;
+  margin: 0 -13%;
   padding: 0 15%;
 }
 
@@ -113,19 +117,19 @@ td {
 }
 
 td:not(:first-child) {
-  border-bottom: 1px solid #AAA;
-  line-height: 45px;
+  border-bottom: 1px solid #555;
+  line-height: 40px;
 }
 
 th, td {
-  font-size: 20px;
+  font-size: 13px;
+  min-width: 45px;
   width: 25%;
 }
 
 .pagination button {
   color: #CCC;
-  font-size: 30px;
-  padding: 0 10%;
+  font-size: 15px;
 }
 
 .pagination button:hover {
